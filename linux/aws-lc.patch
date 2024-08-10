@@ -1,0 +1,49 @@
+diff --git a/certs/extract-cert.c b/certs/extract-cert.c
+index 70e9ec89d87d..2e7d11c9bf03 100644
+--- a/certs/extract-cert.c
++++ b/certs/extract-cert.c
+@@ -56,6 +56,7 @@ static void display_openssl_errors(int l)
+ 	}
+ }
+ 
++#ifndef OPENSSL_IS_AWSLC
+ static void drain_openssl_errors(void)
+ {
+ 	const char *file;
+@@ -65,6 +66,7 @@ static void drain_openssl_errors(void)
+ 		return;
+ 	while (ERR_get_error_line(&file, &line)) {}
+ }
++#endif
+ 
+ #define ERR(cond, fmt, ...)				\
+ 	do {						\
+@@ -99,8 +101,6 @@ int main(int argc, char **argv)
+ 	char *cert_src;
+ 	char *verbose_env;
+ 
+-	OpenSSL_add_all_algorithms();
+-	ERR_load_crypto_strings();
+ 	ERR_clear_error();
+ 
+ 	verbose_env = getenv("KBUILD_VERBOSE");
+@@ -122,6 +122,10 @@ int main(int argc, char **argv)
+ 		fclose(f);
+ 		exit(0);
+ 	} else if (!strncmp(cert_src, "pkcs11:", 7)) {
++#ifdef OPENSSL_IS_AWSLC
++		ERR(1, "AWS-LC does not support extracting from PKCS#11");
++		exit(1);
++#else
+ 		ENGINE *e;
+ 		struct {
+ 			const char *cert_id;
+@@ -144,6 +148,7 @@ int main(int argc, char **argv)
+ 		ENGINE_ctrl_cmd(e, "LOAD_CERT_CTRL", 0, &parms, NULL, 1);
+ 		ERR(!parms.cert, "Get X.509 from PKCS#11");
+ 		write_cert(parms.cert);
++	#endif
+ 	} else {
+ 		BIO *b;
+ 		X509 *x509;
+
