@@ -40,7 +40,16 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.cmakeBool "BUILD_SHARED_LIBS" (!stdenv.targetPlatform.isStatic))
     "-GNinja"
     "-DDISABLE_GO=ON"
+    "-Bbuild"
   ];
+
+  buildPhase = ''
+    cmake --build build
+  '';
+
+  installPhase = ''
+    cmake --install build
+  '';
 
   env.NIX_CFLAGS_COMPILE = toString (
     lib.optionals stdenv.cc.isGNU [
@@ -48,10 +57,6 @@ stdenv.mkDerivation (finalAttrs: {
       "-Wno-error=stringop-overflow"
     ]
   );
-
-  buildPhase = "ninjaBuildPhase";
-
-  installPhase = "ninjaInstallPhase";
 
   postFixup = ''
     for f in $out/lib/crypto/cmake/*/crypto-targets.cmake; do
