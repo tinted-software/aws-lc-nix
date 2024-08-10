@@ -16,6 +16,22 @@
         "type": "github"
       }
     },
+    "linux-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723264405,
+        "narHash": "sha256-tEt6OCXhPCigOYqiBW2Qzw8rhR5EGBZddLNGn/v7QZg=",
+        "owner": "torvalds",
+        "repo": "linux",
+        "rev": "34ac1e82e5a78d5ed7f647766f5b1b51ca4d983a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "torvalds",
+        "repo": "linux",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1723267286,
@@ -35,6 +51,7 @@
     "root": {
       "inputs": {
         "aws-lc-src": "aws-lc-src",
+        "linux-src": "linux-src",
         "nixpkgs": "nixpkgs",
         "systems": "systems"
       }

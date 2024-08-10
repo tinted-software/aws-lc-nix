@@ -9,6 +9,9 @@
     gssSupport = false;
     http2Support = false;
   };
+  python312 = super.python312.overrideAttrs (old: {
+    patches = old.patches ++ [ ./python/aws-lc-3.12.patch ];
+  });
   curl = super.curl.override { pslSupport = false; };
   ninja = super.callPackage ./ninja { };
   pkg-config-unwrapped = super.pkg-config-unwrapped.overrideAttrs (old: rec {
