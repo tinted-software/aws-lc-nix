@@ -3,7 +3,7 @@
 
   inputs = {
     systems.url = "github:nix-systems/default";
-    nixpkgs.url = "github:nixos/nixpkgs/master";
+    nixpkgs.url = "github:nixos/nixpkgs/pull/332918/head";
     linux-src = {
       url = "github:torvalds/linux";
       flake = false;
@@ -38,11 +38,12 @@
               linker = "lld";
             };
 
-            overlays = [ (import ./overlay.nix { inherit aws-lc-src; }) ];
+            overlays = [ (import ./overlay.nix { inherit aws-lc-src linux-src; }) ];
           };
         in
         {
           aws-lc = pkgs.aws-lc;
+          linux = pkgs.linuxKernel.packages.mainline;
         }
       );
     };

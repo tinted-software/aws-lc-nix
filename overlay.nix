@@ -1,5 +1,6 @@
 { aws-lc-src }:
 (self: super: {
+  linuxKernel.packages.mainline = self.callPackage ./linux { inherit linux-src; };
   llvmPackages = super.llvmPackages_19;
   cmake = self.callPackage ./cmake { isMinimalBuild = true; };
   cmakeMinimal = self.callPackage ./cmake { isMinimalBuild = true; };
