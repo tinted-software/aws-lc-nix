@@ -40,10 +40,11 @@ stdenv.mkDerivation (finalAttrs: {
     	src/missing_deps.cc \
     	src/parser.cc \
     	src/state.cc \
-    	src/status_printer.cc \
+    	src/status.cc \
     	src/string_piece_util.cc \
     	src/util.cc \
     	src/version.cc \
+      src/subprocess-posix.cc \
       src/ninja.cc
   '';
 
