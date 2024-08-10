@@ -38,7 +38,7 @@
               linker = "lld";
             };
 
-            overlays = [ (import ./overlay.nix { inherit aws-lc-src linux-src; }) ];
+            overlays = [ (import ./overlay.nix { inherit aws-lc-src linux-src nixpkgs; }) ];
           };
         in
         {

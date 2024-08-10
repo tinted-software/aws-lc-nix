@@ -1,6 +1,13 @@
-{ aws-lc-src }:
+{
+  aws-lc-src,
+  linux-src,
+  nixpkgs,
+}:
 (self: super: {
-  linuxKernel.packages.mainline = self.callPackage ./linux { inherit linux-src; };
+  linuxKernel.packages.mainline = self.callPackage ./linux {
+    inherit linux-src;
+    buildLinux = self.callPackage "${nixpkgs}/pkgs/os-specific/linux/kernel/generic.nix" { };
+  };
   llvmPackages = super.llvmPackages_19;
   cmake = self.callPackage ./cmake { isMinimalBuild = true; };
   cmakeMinimal = self.callPackage ./cmake { isMinimalBuild = true; };
